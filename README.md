@@ -11,7 +11,12 @@ Dietary patterns have also been linked to shifts in specific microbial taxa. For
 
 Advances in metagenomic sequencing have greatly expanded our understanding of the gut microbiome and its relationship with diet and health. Shotgun metagenomics allows researchers to analyze all genetic material within a sample, enabling species- and strain-level characterization of microbial communities and providing insights into their functional potential [1]. Because individual microbial species and strains can possess distinct genomic and metabolic capabilities, this approach provides a more comprehensive understanding of microbiome structure and function than traditional taxonomic profiling alone [1].
 
+Shotgun metagenomic sequencing provides a comprehensive approach for studying microbial communities. Although it is more expensive than targeted approaches such as 16S rRNA gene sequencing, it offers several important advantages [3]. In addition to identifying the taxonomic composition of microbial communities, shotgun metagenomics also enables the analysis of genes present in the microbiome, allowing researchers to investigate the functional capabilities of microbial populations [3]. Numerous bioinformatic tools have been developed to analyze shotgun sequencing data, including methods for taxonomic classification, prediction of gene abundance such as antibiotic resistance or virulence genes, reconstruction of metagenome-assembled genomes (MAGs), and metabolic pathway analysis [3]. Many of these tools can directly access sequencing data deposited in public repositories using accession numbers, which simplifies large-scale analysis and facilitates reproducible microbiome research.
+
 In this study, shotgun metagenomic sequencing data from human gut samples will be analyzed to compare microbial communities between individuals following vegan and omnivorous diets. This analysis aims to investigate how dietary patterns influence gut microbiome composition and to explore potential differences in microbial taxa associated with plant-based and animal-based diets.
+
+
+
 
 # Methods
 # Results
@@ -21,3 +26,6 @@ In this study, shotgun metagenomic sequencing data from human gut samples will b
 [1] De Filippis, F., Pasolli, E., Tett, A., Tarallo, S., Naccarati, A., De Angelis, M., Neviani, E., Cocolin, L., Gobbetti, M., Segata, N., & Ercolini, D. (2019). Distinct Genetic and Functional Traits of Human Intestinal Prevotella copri Strains Are Associated with Different Habitual Diets. Cell Host & Microbe, 25(3), 444-453.e3. https://doi.org/10.1016/j.chom.2019.01.004
 
 [2] Fackelmann, G., Manghi, P., Carlino, N., Heidrich, V., Piccinno, G., Ricci, L., Piperni, E., Arrè, A., Bakker, E., Creedon, A. C., Francis, L., Capdevila Pujol, J., Davies, R., Wolf, J., Bermingham, K. M., Berry, S. E., Spector, T. D., Asnicar, F., & Segata, N. (2025). Gut microbiome signatures of vegan, vegetarian and omnivore diets and associated health outcomes across 21,561 individuals. Nature Microbiology, 10(1), 41–52. https://doi.org/10.1038/s41564-024-01870-z
+
+[3] Yan, J., Liao, C., Taylor, B. P., Fontana, E., Amoretti, L. A., Wright, R. J., Littmann, E. R., Dai, A., Waters, N., Peled, J. U., Taur, Y., Perales, M.-A., Siranosian, B. A., Bhatt, A. S., van den Brink, M. R. M., Pamer, E. G., Schluter, J., & Xavier, J. B. (2022). A compilation of fecal microbiome shotgun metagenomics from hematopoietic cell transplantation patients. Scientific Data, 9(1), Article 219. https://doi.org/10.1038/s41597-022-01302-9
+
