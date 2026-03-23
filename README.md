@@ -97,10 +97,26 @@ Alpha diversity was assessed using the Shannon index to evaluate within-sample m
 
 **Table 1. Comparison of alpha diversity (Shannon index) between diet groups.**
 Mean Shannon diversity values are shown for omnivore and vegan samples. A Welch two-sample t-test was performed to assess differences in alpha diversity between groups.
-| Group | Mean Shannon | SD | n |
-| :---------: | :-----------: | :----: | :---: |
-| Omnivore | 2.869663 | 0.6500763 | 3 |
-| Vegan | 2/673013   | 0.2538101 | 3 |
+<table align="center">
+  <tr>
+    <th>Group</th>
+    <th>Mean Shannon</th>
+    <th>SD</th>
+    <th>n</th>
+  </tr>
+  <tr>
+    <td align="center">Omnivore</td>
+    <td align="center">2.869663</td>
+    <td align="center">0.6500763</td>
+    <td align="center">3</td>
+  </tr>
+  <tr>
+    <td align="center">Vegan</td>
+    <td align="center">2.673013</td>
+    <td align="center">0.2538101</td>
+    <td align="center">3</td>
+  </tr>
+</table>
 
 Welch two-sample t-test: t = 0.49, df = 2.60, p = 0.6637
 95% confidence interval: −1.21 to 1.60
@@ -116,12 +132,40 @@ Beta diversity was assessed using Bray–Curtis dissimilarity and visualized usi
 
 **Table 2. PERMANOVA results testing differences in microbial community composition between diet groups.**
 Permutational multivariate analysis of variance (PERMANOVA) was performed using Bray–Curtis dissimilarity to assess differences in community composition between omnivore and vegan samples.
-| Source |	Df | Sum of Squares	| R² | F	| p-value |
-| :---------: | :-----------: | :----: | :---: | :---: | :---: |
-| Diet |	1	| 0.23389 |	0.20835 |	1.0528 |	0.20 |
-| Residual | 4 |	0.88866 |	0.79165 |	— | — |
-| Total |	5	| 1.1255 |	1.00000 |	— | — |
-
+<table align="center">
+  <tr>
+    <th>Source</th>
+    <th>Df</th>
+    <th>Sum of Squares</th>
+    <th>R²</th>
+    <th>F</th>
+    <th>p-value</th>
+  </tr>
+  <tr>
+    <td align="center">Diet</td>
+    <td align="center">1</td>
+    <td align="center">0.23389</td>
+    <td align="center">0.20835</td>
+    <td align="center">1.0528</td>
+    <td align="center">0.20</td>
+  </tr>
+  <tr>
+    <td align="center">Residual</td>
+    <td align="center">4</td>
+    <td align="center">0.88866</td>
+    <td align="center">0.79165</td>
+    <td align="center">—</td>
+    <td align="center">—</td>
+  </tr>
+  <tr>
+    <td align="center">Total</td>
+    <td align="center">5</td>
+    <td align="center">1.1255</td>
+    <td align="center">1.00000</td>
+    <td align="center">—</td>
+    <td align="center">—</td>
+  </tr>
+</table>
 Permutational multivariate analysis of variance (PERMANOVA) was performed to assess whether microbial community composition differed between diet groups based on Bray–Curtis dissimilarity (Table 2). Diet explained approximately 20.8% of the variation in community composition (R² = 0.21); however, this effect was not statistically significant (F = 1.05, p = 0.20). These results indicate that, although some variation in microbial composition is associated with diet, the differences between omnivore and vegan groups are not strong enough to be distinguished from within-group variability in this dataset.
 
 <img width="2100" height="2100" alt="image" src="https://github.com/user-attachments/assets/bcb6e361-a063-45da-8440-1f7d941d70b6" />
