@@ -1,0 +1,12 @@
+
+	Welch Two Sample t-test
+
+data:  Shannon by Diet
+t = 0.48807, df = 2.5959, p-value = 0.6637
+alternative hypothesis: true difference in means between group Omnivore and group Vegan is not equal to 0
+95 percent confidence interval:
+ -1.206264  1.599564
+sample estimates:
+mean in group Omnivore    mean in group Vegan 
+              2.869663               2.673013 
+
