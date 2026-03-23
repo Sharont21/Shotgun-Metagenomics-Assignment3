@@ -3,3 +3,4 @@
 *.k2d
 *.tar.gz
 /scratch/
+.Rproj.user
