@@ -81,7 +81,66 @@ All statistical analyses and visualizations were performed in R using phyloseq, 
 
 
 # Results
+<img width="3000" height="1800" alt="image" src="https://github.com/user-attachments/assets/bdddff8a-7347-4afe-8b9d-a9d3e50fb1fe" />
+
+**Figure 1. Relative abundance of microbial species across omnivore and vegan samples.**
+Relative abundance of the top 10 most abundant species is shown for each sample, with remaining taxa grouped as “Other.” Samples are grouped by diet (omnivore vs. vegan) and displayed as stacked bar plots. Each bar represents one sample, and colors indicate individual species contributions to the overall community composition.
+
+Relative abundance analysis was performed to assess microbial community composition across samples (Figure 1). Across both diet groups, a small number of dominant species accounted for the majority of the community, with remaining taxa grouped as “Other.” Omnivore samples exhibited greater variability in species composition, with some samples showing higher contributions from Faecalibacterium prausnitzii and others dominated by different taxa. In contrast, vegan samples showed a more consistent pattern, with Prevotella copri representing a substantial proportion of the microbial community in multiple samples. Despite these trends, considerable variability was observed between individual samples within each diet group, indicating that inter-individual differences may contribute substantially to overall microbial composition.
+
+<img width="2100" height="2100" alt="image" src="https://github.com/user-attachments/assets/c3a67058-97be-4ce8-8a1c-e846ca185a05" />
+
+**Figure 2. Alpha diversity (Shannon index) of microbial communities across diet groups.**
+Alpha diversity was measured using the Shannon index for each sample. Samples are grouped by diet (omnivore vs. vegan). Boxplots display the distribution of diversity values within each group, with individual samples shown as overlaid points.
+
+Alpha diversity was assessed using the Shannon index to evaluate within-sample microbial diversity (Figure 2). Omnivore samples exhibited a slightly higher median Shannon diversity compared to vegan samples, although variability was observed within both groups. Vegan samples showed a narrower distribution of diversity values, indicating more consistent diversity across samples. 
+
+**Table 1. Comparison of alpha diversity (Shannon index) between diet groups.**
+Mean Shannon diversity values are shown for omnivore and vegan samples. A Welch two-sample t-test was performed to assess differences in alpha diversity between groups.
+| Group | Mean Shannon | SD | n |
+| :---------: | :-----------: | :----: | :---: |
+| Omnivore | 2.869663 | 0.6500763 | 3 |
+| Vegan | 2/673013   | 0.2538101 | 3 |
+
+Welch two-sample t-test: t = 0.49, df = 2.60, p = 0.6637
+95% confidence interval: −1.21 to 1.60
+
+Alpha diversity was compared between diet groups using a Welch two-sample t-test (Table 1). The mean Shannon diversity was slightly higher in omnivore samples (mean = 2.87) compared to vegan samples (mean = 2.67). However, this difference was not statistically significant (t = 0.49, df = 2.60, p = 0.6637), and the 95% confidence interval (−1.21 to 1.60) included zero, indicating no evidence of a difference in within-sample diversity between diet groups. The Welch two-sample t-test revealed no significant difference in alpha diversity between diet groups, suggesting that within-sample microbial diversity is comparable between omnivore and vegan individuals in this dataset. 
+
+<img width="2100" height="2100" alt="image" src="https://github.com/user-attachments/assets/946d2385-3026-4cf1-a992-2157e147980f" />
+
+**Figure 3. Principal Coordinates Analysis (PCoA) of microbial community composition based on Bray–Curtis dissimilarity.**
+PCoA was performed using Bray–Curtis distances calculated from species-level relative abundance data. Samples are colored by diet group (omnivore vs vegan), and each point represents one sample.
+
+Beta diversity was assessed using Bray–Curtis dissimilarity and visualized using Principal Coordinates Analysis (PCoA) to evaluate differences in microbial community composition between samples (Figure 3). Samples showed partial clustering by diet group, with omnivore samples generally occupying a distinct region of the ordination space compared to vegan samples. However, some overlap between groups was observed, indicating that differences in community composition are not completely separated by diet. Additionally, variation within diet groups was evident, with one vegan sample (SRR8146954) appearing more distant from other samples along the second principal coordinate. Overall, these results suggest moderate differences in microbial community structure between diet groups, with substantial inter-individual variability.
+
+**Table 2. PERMANOVA results testing differences in microbial community composition between diet groups.**
+Permutational multivariate analysis of variance (PERMANOVA) was performed using Bray–Curtis dissimilarity to assess differences in community composition between omnivore and vegan samples.
+| Source |	Df | Sum of Squares	| R² | F	| p-value |
+| :---------: | :-----------: | :----: | :---: | :---: | :---: |
+| Diet |	1	| 0.23389 |	0.20835 |	1.0528 |	0.20 |
+| Residual | 4 |	0.88866 |	0.79165 |	— | — |
+| Total |	5	| 1.1255 |	1.00000 |	— | — |
+
+Permutational multivariate analysis of variance (PERMANOVA) was performed to assess whether microbial community composition differed between diet groups based on Bray–Curtis dissimilarity (Table 2). Diet explained approximately 20.8% of the variation in community composition (R² = 0.21); however, this effect was not statistically significant (F = 1.05, p = 0.20). These results indicate that, although some variation in microbial composition is associated with diet, the differences between omnivore and vegan groups are not strong enough to be distinguished from within-group variability in this dataset.
+
+<img width="2100" height="2100" alt="image" src="https://github.com/user-attachments/assets/bcb6e361-a063-45da-8440-1f7d941d70b6" />
+
+**Figure 4. Differential abundance analysis of microbial species between diet groups using ANCOM-BC2.**
+Log fold changes (vegan vs omnivore) are shown for the top 15 taxa ranked by absolute effect size. Points represent estimated log fold changes, and horizontal bars indicate standard errors. The red vertical line at zero indicates no difference between groups.
+
+Differential abundance analysis was performed using ANCOM-BC2 to identify taxa associated with diet (Figure 4). No taxa were found to be significantly different between omnivore and vegan groups after multiple testing correction (q < 0.05). Although several taxa exhibited variation in log fold change, with some enriched in vegan samples (positive values) and others enriched in omnivore samples (negative values), all confidence intervals overlapped zero. These results indicate that no individual species showed a statistically significant association with diet in this dataset, despite observable trends in relative abundance.
+
+<img width="1392" height="860" alt="image" src="https://github.com/user-attachments/assets/94a4999b-02e8-4e9f-858b-6b81fca7bb64" />
+
+**Figure 5. Rarefaction curves of microbial species richness across samples.**
+Rarefaction curves were generated using species-level count data to assess sequencing depth and sampling completeness. Each curve represents one sample, showing the relationship between sequencing depth (number of reads) and observed species richness.
+
+Rarefaction analysis was performed to evaluate whether sequencing depth was sufficient to capture microbial diversity (Figure 5). All samples exhibited curves that approached a plateau, indicating that additional sequencing would likely yield minimal increases in observed species richness. While differences in total richness were observed between samples, the overall shape of the curves suggests adequate sampling depth across all samples.
+
 # Discussion
+
+
 # References
 
 [1] De Filippis, F., Pasolli, E., Tett, A., Tarallo, S., Naccarati, A., De Angelis, M., Neviani, E., Cocolin, L., Gobbetti, M., Segata, N., & Ercolini, D. (2019). Distinct Genetic and Functional Traits of Human Intestinal Prevotella copri Strains Are Associated with Different Habitual Diets. Cell Host & Microbe, 25(3), 444-453.e3. https://doi.org/10.1016/j.chom.2019.01.004
