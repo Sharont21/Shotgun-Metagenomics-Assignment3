@@ -73,7 +73,7 @@ Beta diversity was assessed using Bray–Curtis dissimilarity calculated with `d
 
 ## Differential Abundance Analysis
 
-Differential abundance analysis was conducted using ANCOM-BC2 (ANCOMBC, v2.13.1) [21]. Species-level abundances were analyzed using diet as the main variable (`fix_formula = "Diet"`). P-values were adjusted for multiple testing using the Holm method, and taxa with adjusted q-values < 0.05 were considered statistically significant. Log fold changes and standard errors were extracted and visualized using ggplot2.
+Differential abundance analysis was conducted using ANCOM-BC2 (ANCOMBC, v2.13.1) [21]. Species-level abundances were analyzed using diet as the main variable (`fix_formula = "Diet"`). P-values were adjusted for multiple testing using the Holm method, and taxa with adjusted q-values < 0.05 were considered statistically significant. Log fold changes and standard errors were extracted and visualized using ggplot2. No rarefaction was applied prior to differential abundance analysis, as ANCOM-BC2 accounts for compositional bias and varying library sizes.
 
 ## Statistical Analysis and Visualization
 
