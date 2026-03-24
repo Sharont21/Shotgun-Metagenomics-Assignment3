@@ -1,0 +1,294 @@
+---
+title: "Assignment_03"
+name: "Sharon Tsukernik"
+output: pdf_document
+date: "2026-03-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Loading libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+library(vegan)
+library(ggplot2)
+library(phyloseq)
+library(ANCOMBC)
+library(microbiome)
+
+# to install ANCOMBC
+#install.packages("remotes")
+#remotes::install_github("FrederickHuangLin/ANCOMBC")
+#BiocManager::install("microbiome")
+
+```
+
+```{r}
+# Importing and combining bracken files
+
+files <- list.files(pattern = "\\.bracken$")
+
+# Reading eaach file and adding sample name
+bracken_list <- lapply(files, function(file) {
+  df <- read_tsv(file)
+  df$sample <- file  
+  return(df)
+})
+
+# Combining all samples into one dataframe
+combined <- bind_rows(bracken_list)
+head(combined)
+
+# Cleaning sample names by removing .bracken
+combined$sample <- gsub(".bracken", "", combined$sample)
+
+write_tsv(combined, "results/bracken_output.txt")
+
+table(combined$sample)
+
+unique(combined$taxonomy_lvl)
+
+# Filtering to Species
+combined_species <- combined %>%
+  filter(taxonomy_lvl == "S")
+
+# Converting to abundance matrix
+otu <- combined_species %>%
+  select(sample, name, new_est_reads) %>%
+  pivot_wider(names_from = name,
+              values_from = new_est_reads,
+              values_fill = 0)
+
+head(otu)
+
+otu_mat <- as.data.frame(otu)
+
+# Sample name as rownames
+rownames(otu_mat) <- otu_mat$sample
+otu_mat <- otu_mat[,-1]
+
+dim(otu_mat)
+
+write.csv(otu_mat, "results/otu_matrix.csv")
+
+# creating taxonomy table
+tax <- data.frame(Species = colnames(otu_mat))
+rownames(tax) <- colnames(otu_mat)
+
+# Creating metadata
+metadata <- data.frame(
+  Sample = rownames(otu_mat),
+  Diet = ifelse(rownames(otu_mat) %in% c("SRR8146935","SRR8146936","SRR8146938"),
+                "Omnivore",
+                "Vegan")
+)
+
+rownames(metadata) <- metadata$Sample
+```
+
+
+```{r}
+# Building phyloseq object
+ps <- phyloseq(
+  otu_table(otu_mat, taxa_are_rows = FALSE),
+  tax_table(as.matrix(tax)),
+  sample_data(metadata)
+)
+
+ps
+
+sample_data(ps)
+
+# Rarefaction curve
+otu_mat_rc <- as(otu_table(ps), "matrix")
+
+# Ensuring samples are rows
+if(taxa_are_rows(ps)) {
+  otu_mat_rc <- t(otu_mat_rc)
+}
+
+rownames(otu_mat_rc) <- paste0(
+  rownames(otu_mat_rc),
+  ifelse(rownames(otu_mat_rc) %in% c("SRR8146935","SRR8146936","SRR8146938"),
+         "_omnivore",
+         "_vegan")
+)
+
+par(mar = c(5, 5, 2, 2))
+
+# Rarecurve
+rarecurve(otu_mat_rc,
+          step = 5000,
+          cex = 0.6,
+          col = "black")
+
+
+```
+
+```{r} 
+# Taxonomic abundance (relative abundance)
+
+# Converting counts to relative abundance
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+# Converting phyloseq object to df
+df <- psmelt(ps_rel)
+
+head(df)
+
+# Removing duplicate column
+df <- df %>% select(-sample_Sample)
+
+# Getting top 10 most abundant species
+top_taxa <- df %>%
+  group_by(Species) %>%
+  summarise(total = sum(Abundance)) %>%
+  arrange(desc(total)) %>%
+  slice(1:10) %>%
+  pull(Species)
+
+# Grouping remaining taxa as "other"
+df_clean <- df %>%
+  mutate(Species_clean = ifelse(Species %in% top_taxa, Species, "Other")) %>%
+  group_by(Sample, Species_clean) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop")
+
+# Adding diet groups
+df_clean <- df_clean %>%
+  mutate(Diet = ifelse(Sample %in% c("SRR8146935","SRR8146936","SRR8146938"),
+                       "Omnivore",
+                       "Vegan"))
+
+abundance_plot <- ggplot(df_clean, aes(x = Sample, y = Abundance, fill = Species_clean)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~Diet, scales = "free_x") +
+  labs(y = "Relative Abundance", x = "Sample", fill = "Species") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+abundance_plot
+
+ggsave("figures/relative_abundance.png", plot = abundance_plot, width = 10, height = 6)
+
+
+```
+
+```{r}
+# Alpha diversity
+
+plot_richness(ps)
+
+# Shannon index
+alpha_df <- estimate_richness(ps, measures = c("Shannon"))
+alpha_df$Sample <- rownames(alpha_df)
+alpha_df$Diet <- metadata$Diet
+
+alpha_plot <- ggplot(alpha_df, aes(x = Diet, y = Shannon, fill = Diet)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1, size = 3) +
+  labs(title = "Alpha Diversity (Shannon Index)",
+       x = "Diet", y = "Shannon Diversity") +
+  theme_minimal()
+
+alpha_plot
+
+ggsave("figures/alpha_diversity.png", plot = alpha_plot)
+
+
+# T-test
+ttest_res <- t.test(Shannon ~ Diet, data = alpha_df)
+ttest_res
+capture.output(ttest_res, file = "results/alpha_ttest.txt")
+
+alpha_df %>%
+  group_by(Diet) %>%
+  summarise(
+    mean = mean(Shannon),
+    sd = sd(Shannon),
+    n = n()
+  )
+```
+
+```{r}
+# Beta diversity (PCoA + PERMANOVA)
+
+# Ordination
+ord <- ordinate(ps, method = "PCoA", distance = "bray")
+
+plot_data <- plot_ordination(ps, ord, justDF = TRUE)
+plot_data$Sample <- rownames(plot_data)
+plot_data$Diet <- metadata$Diet
+
+pcoa_plot <- ggplot(plot_data, aes(x = Axis.1, y = Axis.2, color = Diet)) +
+  geom_point(size = 4) +
+  geom_text(aes(label = Sample), vjust = -1) +
+  labs(title = "PCoA (Bray-Curtis)",
+       x = "PCoA1", y = "PCoA2") +
+  theme_minimal()
+
+pcoa_plot
+
+ggsave("figures/pcoa.png", plot = pcoa_plot)
+
+# PERMANOVA
+dist_mat <- phyloseq::distance(ps, method = "bray")
+permanova_res <- adonis2(dist_mat ~ Diet, data = metadata)
+permanova_res
+capture.output(permanova_res, file = "results/permanova.txt")
+
+```
+
+```{r}
+# Differential abundance (ANCOMBC2)
+
+ancombc.out <- ancombc2(
+  data = ps,
+  tax_level = "Species",
+  fix_formula = "Diet",
+  group = "Diet",
+  p_adj_method = "holm",
+  prv_cut = 0,
+  lib_cut = 0
+)
+
+res <- ancombc.out$res
+head(res)
+
+# Removing NA's
+res_clean <- res %>% filter(!is.na(lfc_DietVegan))
+
+# Identifying significant taxa
+sig_taxa <- res[res$q_DietVegan < 0.05, ]
+sig_taxa
+# none
+
+# Top taxa for visualization
+top_res <- res_clean %>%
+  arrange(desc(abs(lfc_DietVegan))) %>%
+  slice(1:15)
+
+ancom_plot <- ggplot(top_res, aes(x = lfc_DietVegan, y = reorder(taxon, lfc_DietVegan))) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(xmin = lfc_DietVegan - se_DietVegan,
+                    xmax = lfc_DietVegan + se_DietVegan)) +
+  geom_vline(xintercept = 0, color = "red") +
+  labs(x = "Log Fold Change (Vegan vs Omnivore)",
+       y = "Species") +
+  theme_minimal()
+
+ancom_plot
+
+ggsave("figures/ancombc.png", plot = ancom_plot)
+
+# Save full ANCOMBC results
+write.csv(res, "results/ancombc_results.csv", row.names = FALSE)
+
+
+```
+
+
+
